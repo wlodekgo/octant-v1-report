@@ -352,8 +352,24 @@
     .footer-text a { color: rgba(255,255,255,.5); text-decoration: none; }
     .footer-text a:hover { color: #fff; }
 
+    /* ─── Sablier group dot ─── */
+    .sablier-group-dot {
+      width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0;
+      display: inline-block; margin-right: 6px; vertical-align: middle;
+    }
+    .sablier-legend-note {
+      margin-top: 12px; padding-top: 12px;
+      border-top: 1px solid var(--border);
+      font-size: 12px; color: var(--gray); line-height: 1.6;
+    }
+
     /* ─── Divider ─── */
     .divider { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
+
+    /* ─── Sablier fate layout ─── */
+    .sablier-fate-inner {
+      display: flex; gap: 28px; align-items: center; flex: 1; margin-top: 12px;
+    }
 
     /* ─── Responsive ─── */
     @media (max-width: 960px) {
@@ -361,6 +377,7 @@
       .fund-layout { grid-template-columns: 1fr; }
       .fund-chart-wrap { max-width: 280px; margin: 0 auto; }
       .grid-2 { grid-template-columns: 1fr; }
+      .grid-4 { grid-template-columns: repeat(2, 1fr); }
       .migration-grid { grid-template-columns: 1fr 1fr; }
       .epoch-meta-grid { grid-template-columns: repeat(3, 1fr); }
       .ranking-row { grid-template-columns: 28px 150px 1fr 90px; }
@@ -370,13 +387,17 @@
       .hero-kpis { grid-template-columns: 1fr 1fr; }
       .hero-kpi-val { font-size: 28px; }
       .grid-3 { grid-template-columns: 1fr; }
+      .grid-4 { grid-template-columns: 1fr 1fr; }
       .migration-grid { grid-template-columns: 1fr; }
       .epoch-meta-grid { grid-template-columns: 1fr 1fr; }
       .ranking-row { grid-template-columns: 24px 1fr 80px; }
       .ranking-bar-bg { display: none; }
-      .nav-links { display: none; }
+      .nav-inner { flex-direction: column; height: auto; padding: 8px 0; gap: 4px; }
+      .nav-links { overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; gap: 16px; width: 100%; }
+      .nav-links::-webkit-scrollbar { display: none; }
       .section { padding: 56px 0; }
       .hero { padding: 48px 0 40px; }
+      .sablier-fate-inner { flex-direction: column; align-items: flex-start; }
     }
   </style>
 </head>
@@ -397,6 +418,7 @@
         <li><a href="#allocations">Allocations</a></li>
         <li><a href="#epochs">Epochs</a></li>
         <li><a href="#rankings">Rankings</a></li>
+        <li><a href="#sablier">Sablier</a></li>
         <li><a href="#migration">Migration</a></li>
       </ul>
     </div>
@@ -433,6 +455,8 @@
   </div>
 </header>
 
+<main>
+
 <!-- ══════════ FUND DISTRIBUTION ══════════ -->
 <section class="section" id="funds">
   <div class="container">
@@ -445,7 +469,7 @@
 
     <div class="fund-layout">
       <div class="fund-chart-wrap">
-        <canvas id="fundChart" width="300" height="300" aria-label="Fund distribution donut chart">Breakdown of 8,262.58 ETH: Donated to projects 2,867.55 ETH (34.7%), Golem Foundation costs &amp; staking 2,406.62 ETH (29.1%), Claimed by users 1,780.53 ETH (21.6%), Participation Promotion Fund held 667.46 ETH (8.1%), Community Fund 344.19 ETH (4.2%), Epoch 11 Matching to v2 121.14 ETH (1.5%), Unclaimed rewards 75.10 ETH (0.9%).</canvas>
+        <canvas id="fundChart" role="img" width="300" height="300" aria-label="Fund distribution donut chart">Breakdown of 8,262.58 ETH: Donated to projects 2,867.55 ETH (34.7%), Golem Foundation costs &amp; staking 2,406.62 ETH (29.1%), Claimed by users 1,780.53 ETH (21.6%), Participation Promotion Fund held 667.46 ETH (8.1%), Community Fund 344.19 ETH (4.2%), Epoch 11 Matching to v2 121.14 ETH (1.5%), Unclaimed rewards 75.10 ETH (0.9%).</canvas>
       </div>
       <div>
         <div class="fund-legend" id="fundLegend">
@@ -476,7 +500,7 @@
     <div class="chart-card">
       <div class="chart-title">Active Allocators per Epoch</div>
       <div class="chart-sub">Total allocators and participation rate (% of eligible users)</div>
-      <canvas id="participationChart" height="280" aria-label="Allocators per epoch bar chart">Active allocators per epoch: E1 362 (70.3%), E2 366 (62.5%), E3 320 (53.1%), E4 303 (51.1%), E5 439 (48.9%), E6 479 (48.8%), E7 659 (30.5%), E8 365 (28.2%), E9 239 (23.1%), E10 279 (27.5%), E11 161 (16.2%).</canvas>
+      <canvas id="participationChart" role="img" height="280" aria-label="Allocators per epoch bar chart">Active allocators per epoch: E1 362 (70.3%), E2 366 (62.5%), E3 320 (53.1%), E4 303 (51.1%), E5 439 (48.9%), E6 479 (48.8%), E7 659 (30.5%), E8 365 (28.2%), E9 239 (23.1%), E10 279 (27.5%), E11 161 (16.2%).</canvas>
     </div>
 
     <div class="grid-2" style="margin-top:24px;">
@@ -506,7 +530,7 @@
       <div class="chart-card">
         <div class="chart-title">Allocators by Loyalty Depth</div>
         <div class="chart-sub">Number of unique allocators by how many epochs they participated in</div>
-        <canvas id="loyaltyChart" height="260" aria-label="Allocators by number of epochs participated bar chart">Unique allocators by epochs participated: 1 epoch 535, 2 epochs 263, 3 epochs 150, 4 epochs 157, 5 epochs 70, 6 epochs 35, 7 epochs 45, 8 epochs 29, 9 epochs 24, 10 epochs 29, all 11 epochs 20.</canvas>
+        <canvas id="loyaltyChart" role="img" height="260" aria-label="Allocators by number of epochs participated bar chart">Unique allocators by epochs participated: 1 epoch 535, 2 epochs 263, 3 epochs 150, 4 epochs 157, 5 epochs 70, 6 epochs 35, 7 epochs 45, 8 epochs 29, 9 epochs 24, 10 epochs 29, all 11 epochs 20.</canvas>
       </div>
     </div>
 
@@ -539,7 +563,7 @@
       <div class="chart-card">
         <div class="chart-title">Allocator vs Donor Retention</div>
         <div class="chart-sub">Epoch-over-epoch return rate — all allocators vs donors only (≥1 donation). Donors skew lower in later epochs.</div>
-        <canvas id="retentionLineChart" height="280" aria-label="Allocator vs donor retention line chart">Epoch-over-epoch retention — allocator vs donor: E1→E2 77.3%/77.2%, E2→E3 73.0%/70.2%, E3→E4 77.5%/77.5%, E4→E5 53.1%/53.0%, E5→E6 68.1%/67.5%, E6→E7 52.2%/48.6%, E7→E8 41.3%/39.9%, E8→E9 49.0%/47.9%, E9→E10 72.8%/70.0%, E10→E11 43.7%/36.2%.</canvas>
+        <canvas id="retentionLineChart" role="img" height="280" aria-label="Allocator vs donor retention line chart">Epoch-over-epoch retention — allocator vs donor: E1→E2 77.3%/77.2%, E2→E3 73.0%/70.2%, E3→E4 77.5%/77.5%, E4→E5 53.1%/53.0%, E5→E6 68.1%/67.5%, E6→E7 52.2%/48.6%, E7→E8 41.3%/39.9%, E8→E9 49.0%/47.9%, E9→E10 72.8%/70.0%, E10→E11 43.7%/36.2%.</canvas>
       </div>
     </div>
 
@@ -557,7 +581,7 @@
 <section class="section" id="allocations">
   <div class="container">
     <p class="section-eyebrow">Allocations</p>
-    <h2 class="section-title">How donors allocated their rewards</h2>
+    <h2 class="section-title">How the Octant Community Allocated Rewards</h2>
     <p class="section-sub">
       ETH flow per epoch and allocator behaviour trends across v1 —
       from funding splits to project breadth and donation concentration.
@@ -566,19 +590,19 @@
     <div class="chart-card">
       <div class="chart-title">Allocated Distribution (Epochs 1–11)</div>
       <div class="chart-sub">ETH donated to projects vs claimed by users vs unclaimed rewards per epoch</div>
-      <canvas id="splitChart" height="280" aria-label="Donated vs claimed per epoch stacked bar">ETH allocation per epoch — donated to projects / claimed by users / unclaimed: E1 249.71/70.39/9.51, E2 231.22/134.02/0.28, E3 359.41/213.98/1.81, E4 302.36/198.40/11.53, E5 322.61/187.67/14.93, E6 288.20/181.45/1.99, E7 298.67/203.88/3.46, E8 289.63/170.38/14.13, E9 242.18/164.47/5.22, E10 282.93/179.44/2.06, E11 0.63/76.45/10.18.</canvas>
+      <canvas id="splitChart" role="img" height="280" aria-label="Donated vs claimed per epoch stacked bar">ETH allocation per epoch — donated to projects / claimed by users / unclaimed: E1 249.71/70.39/9.51, E2 231.22/134.02/0.28, E3 359.41/213.98/1.81, E4 302.36/198.40/11.53, E5 322.61/187.67/14.93, E6 288.20/181.45/1.99, E7 298.67/203.88/3.46, E8 289.63/170.38/14.13, E9 242.18/164.47/5.22, E10 282.93/179.44/2.06, E11 0.63/76.45/10.18.</canvas>
     </div>
 
     <div class="grid-2" style="margin-top:24px;">
       <div class="chart-card">
         <div class="chart-title">Avg Projects Selected per Donor</div>
         <div class="chart-sub">Average number of projects each donating allocator funded per epoch. Epoch 11 shown separately — only Protocol Guild was available.</div>
-        <canvas id="avgProjectsChart" height="240" aria-label="Average projects per donor per epoch bar chart">Average projects funded per donor: E1 6.65, E2 5.51, E3 6.80, E4 5.74, E5 4.51, E6 4.35, E7 3.84, E8 5.09, E9 5.10, E10 4.63, E11 1.00.</canvas>
+        <canvas id="avgProjectsChart" role="img" height="240" aria-label="Average projects per donor per epoch bar chart">Average projects funded per donor: E1 6.65, E2 5.51, E3 6.80, E4 5.74, E5 4.51, E6 4.35, E7 3.84, E8 5.09, E9 5.10, E10 4.63, E11 1.00.</canvas>
       </div>
       <div class="chart-card">
         <div class="chart-title">Top-1 Donor Concentration</div>
         <div class="chart-sub">Share of all direct donations controlled by the single largest donor per epoch</div>
-        <canvas id="top1Chart" height="240" aria-label="Top-1 donor concentration per epoch bar chart">Top-1 donor concentration per epoch: E1 34.7%, E2 27.6%, E3 43.9%, E4 20.9%, E5 58.1%, E6 64.3%, E7 14.2%, E8 66.2%, E9 41.4%, E10 58.8%, E11 32.9%.</canvas>
+        <canvas id="top1Chart" role="img" height="240" aria-label="Top-1 donor concentration per epoch bar chart">Top-1 donor concentration per epoch: E1 34.7%, E2 27.6%, E3 43.9%, E4 20.9%, E5 58.1%, E6 64.3%, E7 14.2%, E8 66.2%, E9 41.4%, E10 58.8%, E11 32.9%.</canvas>
       </div>
     </div>
 
@@ -595,7 +619,7 @@
       <div class="chart-card">
         <div class="chart-title">Claimed Rewards vs Direct Donations</div>
         <div class="chart-sub">Per epoch — and totals across all v1</div>
-        <div style="display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:10px; margin-bottom:20px;">
+        <div class="grid-4" style="gap:10px; margin-bottom:20px;">
           <div style="text-align:center; padding:14px 8px; background:var(--surface2); border-radius:8px;">
             <div style="font-family:var(--font-serif); font-size:26px; color:var(--dark); line-height:1.1;">107.5</div>
             <div style="font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.07em; color:var(--gray); margin-top:4px;">Direct ETH</div>
@@ -636,7 +660,7 @@
       <div class="chart-card">
         <div class="chart-title">Matching Leverage per Epoch</div>
         <div class="chart-sub">Project funding generated per 1 ETH of direct donations (E11 had no Golem Foundation matching)</div>
-        <canvas id="leverageChart" height="280" aria-label="Matching leverage per epoch bar chart">Matching leverage (project funding per 1 ETH direct donations): E1 45.44x, E2 59.35x, E3 15.42x, E4 63.16x, E5 18.30x, E6 20.14x, E7 66.00x, E8 20.62x, E9 62.60x, E10 19.07x, E11 1.01x (no Golem Foundation matching).</canvas>
+        <canvas id="leverageChart" role="img" height="280" aria-label="Matching leverage per epoch bar chart">Matching leverage (project funding per 1 ETH direct donations): E1 45.44x, E2 59.35x, E3 15.42x, E4 63.16x, E5 18.30x, E6 20.14x, E7 66.00x, E8 20.62x, E9 62.60x, E10 19.07x, E11 1.01x (no Golem Foundation matching).</canvas>
       </div>
     </div>
   </div>
@@ -688,6 +712,192 @@
   </div>
 </section>
 
+<!-- ══════════ SABLIER ONBOARDING ══════════ -->
+<section class="section" id="sablier">
+  <div class="container">
+    <p class="section-eyebrow">Sablier Onboarding</p>
+    <h2 class="section-title">Growing the Octant community</h2>
+    <p class="section-sub">
+      Through three community-building programs — the Donor Raffle and partnerships with SheFi and Celo — 1,201 addresses received GLM via Sablier streams. This section tracks what happened next: whether those recipients participated in Octant v1 during Epochs 7–11, whether they migrated to Octant v2, and what became of the streamed GLM.
+    </p>
+
+    <!-- Box A: KPI strip -->
+    <div class="grid-4" style="margin-bottom:24px;">
+      <div class="card">
+        <div class="card-label">Onboarded Users</div>
+        <div class="card-value">1,201</div>
+        <div class="card-note">across 3 partner programs</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Total GLM Streamed</div>
+        <div class="card-value">1.17<span class="card-unit">M GLM</span></div>
+        <div class="card-note">distributed via Sablier streams</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Active in v1 (Epochs 7–11)</div>
+        <div class="card-value">357</div>
+        <div class="card-note">29.7% of recipients participated in at least one allocation window</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Migrated to Octant v2</div>
+        <div class="card-value">31</div>
+        <div class="card-note">2.6% of recipients locked GLM in v2 by 4 Mar 2026</div>
+      </div>
+    </div>
+
+    <!-- Box B + Box C: table + donut -->
+    <div class="grid-2" style="margin-bottom:24px;">
+
+      <!-- B: Group comparison table -->
+      <div class="card">
+        <div class="chart-title">Onboarding program comparison</div>
+        <div class="chart-sub">User outcomes and cancelled GLM by program</div>
+        <div style="overflow-x:auto;">
+        <table class="ret-table" style="margin-top:4px;">
+          <thead>
+            <tr>
+              <th scope="col">Program</th>
+              <th scope="col" style="text-align:right;">Users</th>
+              <th scope="col">Cancelled GLM</th>
+              <th scope="col">Active in v1</th>
+              <th scope="col">Migrated to v2</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="sablier-group-dot" style="background:#e65100;"></span>Celo</td>
+              <td style="font-family:var(--font-mono); text-align:right;">256</td>
+              <td>
+                <div style="font-family:var(--font-mono); font-size:12px; margin-bottom:3px;">98,800 GLM</div>
+                <span class="pill pill-red">91.8%</span>
+              </td>
+              <td>
+                <div style="font-family:var(--font-mono); font-size:12px; margin-bottom:3px;">41 / 256</div>
+                <span class="pill pill-red">16.0%</span>
+              </td>
+              <td>
+                <div style="font-family:var(--font-mono); font-size:12px; margin-bottom:3px;">4 / 256</div>
+                <span class="pill pill-red">1.6%</span>
+              </td>
+            </tr>
+            <tr>
+              <td><span class="sablier-group-dot" style="background:#7c3aed;"></span>SheFi</td>
+              <td style="font-family:var(--font-mono); text-align:right;">923</td>
+              <td>
+                <div style="font-family:var(--font-mono); font-size:12px; margin-bottom:3px;">315,200 GLM</div>
+                <span class="pill pill-red">85.1%</span>
+              </td>
+              <td>
+                <div style="font-family:var(--font-mono); font-size:12px; margin-bottom:3px;">296 / 923</div>
+                <span class="pill pill-yellow">32.1%</span>
+              </td>
+              <td>
+                <div style="font-family:var(--font-mono); font-size:12px; margin-bottom:3px;">10 / 923</div>
+                <span class="pill pill-red">1.1%</span>
+              </td>
+            </tr>
+            <tr>
+              <td><span class="sablier-group-dot" style="background:#2d9b87;"></span>Raffle</td>
+              <td style="font-family:var(--font-mono); text-align:right;">22</td>
+              <td>
+                <div style="font-family:var(--font-mono); font-size:12px; margin-bottom:3px;">10,400 GLM</div>
+                <span class="pill pill-green">1.5%</span>
+              </td>
+              <td>
+                <div style="font-family:var(--font-mono); font-size:12px; margin-bottom:3px;">20 / 22</div>
+                <span class="pill pill-green">90.9%</span>
+              </td>
+              <td>
+                <div style="font-family:var(--font-mono); font-size:12px; margin-bottom:3px;">17 / 22</div>
+                <span class="pill pill-green">77.3%</span>
+              </td>
+            </tr>
+            <tr style="background:var(--surface2);">
+              <td style="font-weight:700;">Total</td>
+              <td style="font-family:var(--font-mono); font-weight:700; text-align:right;">1,201</td>
+              <td>
+                <div style="font-family:var(--font-mono); font-size:12px; font-weight:600; margin-bottom:3px;">424,400 GLM</div>
+                <span style="font-family:var(--font-mono); font-size:12px; color:var(--gray);">36.3%</span>
+              </td>
+              <td>
+                <div style="font-family:var(--font-mono); font-size:12px; font-weight:600; margin-bottom:3px;">357 / 1,201</div>
+                <span style="font-family:var(--font-mono); font-size:12px; color:var(--gray);">29.7%</span>
+              </td>
+              <td>
+                <div style="font-family:var(--font-mono); font-size:12px; font-weight:600; margin-bottom:3px;">31 / 1,201</div>
+                <span style="font-family:var(--font-mono); font-size:12px; color:var(--gray);">2.6%</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        </div><!-- /overflow-x:auto -->
+        <div class="sablier-legend-note">
+          <em>Cancelled GLM</em> = share of streamed GLM that was later cancelled.
+          <em>Active in v1</em> = recipient participated in at least one allocation window in Epochs 7–11.
+          <em>Migrated to v2</em> = recipient locked GLM in Octant v2 by 4 Mar 2026.
+          Percentages in the last two columns are user-based; Cancelled GLM is token-based.
+        </div>
+      </div>
+
+      <!-- C: GLM fate donut -->
+      <div class="card" style="display:flex; flex-direction:column;">
+        <div class="chart-title">What happened to the streamed GLM?</div>
+        <div class="chart-sub">Final token outcomes across all onboarding streams</div>
+        <div class="sablier-fate-inner">
+          <div style="width:180px; flex-shrink:0;">
+            <canvas id="sablierFateChart" role="img" width="180" height="180"
+              aria-label="GLM fate donut chart. Cancelled: 424,400 GLM (36.3%). Withdrawn and attributed to v2 locks: 324,526 GLM (27.8%). Withdrawn not migrated: 377,365 GLM (32.3%). Still in Sablier: 42,910 GLM (3.7%)."></canvas>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:11px; flex:1;">
+            <div class="fund-legend-row">
+              <div class="fund-dot" style="background:#fecaca; border:1.5px solid #fca5a5;"></div>
+              <span class="fund-name">Cancelled</span>
+              <span class="fund-eth" style="font-size:13px;">424,400</span>
+              <span class="fund-pct">36.3%</span>
+            </div>
+            <div class="fund-legend-row">
+              <div class="fund-dot" style="background:#ff9501;"></div>
+              <span class="fund-name">Withdrawn, not migrated to v2</span>
+              <span class="fund-eth" style="font-size:13px;">377,365</span>
+              <span class="fund-pct">32.3%</span>
+            </div>
+            <div class="fund-legend-row">
+              <div class="fund-dot" style="background:#2d9b87;"></div>
+              <span class="fund-name">Withdrawn → attributed to v2 locks</span>
+              <span class="fund-eth" style="font-size:13px;">324,526</span>
+              <span class="fund-pct">27.8%</span>
+            </div>
+            <div class="fund-legend-row">
+              <div class="fund-dot" style="background:#bfdbfe; border:1.5px solid #93c5fd;"></div>
+              <span class="fund-name">Still in Sablier</span>
+              <span class="fund-eth" style="font-size:13px;">42,910</span>
+              <span class="fund-pct">3.7%</span>
+            </div>
+            <div class="sablier-legend-note">
+              The Raffle cohort accounts for <strong style="color:var(--dark);">98%</strong> of all
+              GLM attributed to v2 migration — 319,126 of 324,526 GLM.
+              <br><em>Locked in v2</em> is capped at the amount attributable to the analyzed
+              onboarding streams for each address.
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end grid-2 -->
+
+    <!-- Insight -->
+    <div class="insight">
+      <strong>The three onboarding models produced very different outcomes.</strong>
+      The small Raffle cohort showed much stronger downstream engagement than the two larger
+      partner cohorts: 90.9% of recipients were active in Octant v1 during Epochs 7–11, 77.3%
+      migrated to v2, and the group accounted for 98% of all GLM attributed to v2 migration.
+      This suggests that cohort quality, incentive design, and recipient intent mattered more
+      than scale alone.
+    </div>
+
+  </div>
+</section>
+
 <!-- ══════════ MIGRATION ══════════ -->
 <section class="section" id="migration">
   <div class="container">
@@ -719,7 +929,7 @@
     <div class="chart-card">
       <div class="chart-title">Migration path from Epoch 10 allocators</div>
       <div class="chart-sub">How the 279 active E10 allocators moved through the final funnel</div>
-      <canvas id="migrationChart" height="280" aria-label="Migration funnel chart">Migration funnel from E10: 279 active E10 allocators → 266 remained eligible in E11 → 122 allocated in E11 → 112 migrated to Octant v2.</canvas>
+      <canvas id="migrationChart" role="img" height="280" aria-label="Migration funnel chart">Migration funnel from E10: 279 active E10 allocators → 266 remained eligible in E11 → 122 allocated in E11 → 112 migrated to Octant v2.</canvas>
     </div>
 
     <div class="insight">
@@ -730,6 +940,8 @@
     </div>
   </div>
 </section>
+
+</main>
 
 <!-- ══════════ FOOTER ══════════ -->
 <footer class="footer">
@@ -823,7 +1035,7 @@ const REPORT = {
 
   epochs: [
     {
-      n: 1, theme: "Public Goods", themeClass: "",
+      n: 1, theme: "Digital public goods", themeClass: "",
       allocators: 362, eligible: 515,
       avgProjects: 6.65, top1pct: 34.73,
       donated: 249.71, fundedProjects: 19, rawDonations: "5.4959",
@@ -841,7 +1053,7 @@ const REPORT = {
       ]
     },
     {
-      n: 2, theme: "Public Goods", themeClass: "",
+      n: 2, theme: "Digital public goods", themeClass: "",
       allocators: 366, eligible: 586,
       avgProjects: 5.51, top1pct: 27.64,
       donated: 231.22, fundedProjects: 19, rawDonations: "3.8958",
@@ -876,7 +1088,7 @@ const REPORT = {
       ]
     },
     {
-      n: 4, theme: "Public Goods", themeClass: "",
+      n: 4, theme: "Digital public goods", themeClass: "",
       allocators: 303, eligible: 593,
       avgProjects: 5.74, top1pct: 20.89,
       donated: 302.36, fundedProjects: 30, rawDonations: "4.7875",
@@ -894,7 +1106,7 @@ const REPORT = {
       ]
     },
     {
-      n: 5, theme: "Public Goods", themeClass: "",
+      n: 5, theme: "Digital public goods", themeClass: "",
       allocators: 439, eligible: 898,
       avgProjects: 4.51, top1pct: 58.11,
       donated: 322.61, fundedProjects: 30, rawDonations: "17.6302",
@@ -912,7 +1124,7 @@ const REPORT = {
       ]
     },
     {
-      n: 6, theme: "Public Goods", themeClass: "",
+      n: 6, theme: "Digital public goods", themeClass: "",
       allocators: 479, eligible: 982,
       avgProjects: 4.35, top1pct: 64.29,
       donated: 288.20, fundedProjects: 30, rawDonations: "14.313",
@@ -966,7 +1178,7 @@ const REPORT = {
       ]
     },
     {
-      n: 9, theme: "Content & Media", themeClass: "content",
+      n: 9, theme: "Best of the best", themeClass: "content",
       allocators: 239, eligible: 1034,
       avgProjects: 5.10, top1pct: 41.36,
       donated: 242.18, fundedProjects: 30, rawDonations: "3.8686",
@@ -984,7 +1196,7 @@ const REPORT = {
       ]
     },
     {
-      n: 10, theme: "Public Goods", themeClass: "",
+      n: 10, theme: "Digital public goods", themeClass: "",
       allocators: 279, eligible: 1015,
       avgProjects: 4.63, top1pct: 58.83,
       donated: 282.93, fundedProjects: 24, rawDonations: "14.8356",
@@ -1023,8 +1235,7 @@ const REPORT = {
     { name: "GrowThePie",                      eth:  94.1841, epochs: 5 },
     { name: "Ethereum Attestation Service",    eth:  78.7760, epochs: 5 },
     { name: "Open Source Observer",            eth:  76.5425, epochs: 6 },
-    { name: "ECH Institute", eth: 71.1442, epochs: 6 },
-    { name: "Solidity",                        eth:  68.6500, epochs: 2 }
+    { name: "ECH Institute", eth: 71.1442, epochs: 6 }
   ],
   directDonations: [
     { name: "Protocol Guild",                       eth: 9.818475 },
@@ -1536,6 +1747,7 @@ Chart.defaults.color = "#9ea39e";
     /* Tab button */
     const btn = document.createElement("button");
     btn.className  = "epoch-tab" + (i === 0 ? " active" : "");
+    btn.type       = "button";
     btn.textContent = `E${ep.n}`;
     btn.id         = `btn-${ep.n}`;
     btn.setAttribute("role", "tab");
@@ -1585,7 +1797,7 @@ Chart.defaults.color = "#9ea39e";
       <div class="chart-card epoch-chart-wrap">
         <div class="chart-title">Top ${(ep.fundedProjects ?? ep.projects.length) >= 10 ? "10" : (ep.fundedProjects ?? ep.projects.length)} funded projects — Epoch ${ep.n}</div>
         <div class="chart-sub">ETH received (direct donations + ${ep.n < 4 ? "matching" : "quadratic matching"})</div>
-        <canvas id="epoch-chart-${ep.n}" height="${Math.max(ep.projects.length * 28, 80)}" aria-label="Top projects for epoch ${ep.n}">${ep.projects.map((p, i) => `${i + 1}. ${p.name} ${p.eth.toFixed(2)} ETH`).join(', ')}.</canvas>
+        <canvas id="epoch-chart-${ep.n}" role="img" height="${Math.max(ep.projects.length * 28, 80)}" aria-label="Top projects for epoch ${ep.n}">${ep.projects.map((p, i) => `${i + 1}. ${p.name} ${p.eth.toFixed(2)} ETH`).join(', ')}.</canvas>
       </div>
     `;
     panelsEl.appendChild(panel);
@@ -1705,6 +1917,53 @@ Chart.defaults.color = "#9ea39e";
       <span class="ranking-eth">${p.eth.toFixed(6)} ETH</span>
     `;
     list.appendChild(row);
+  });
+}());
+
+/* ════════════════════════════════════════════════════
+   7b. SABLIER GLM FATE DONUT
+   ════════════════════════════════════════════════════ */
+(function () {
+  const ctx = document.getElementById("sablierFateChart").getContext("2d");
+  new Chart(ctx, {
+    type: "doughnut",
+    data: {
+      labels: [
+        "Cancelled",
+        "Withdrawn, not migrated",
+        "Withdrawn → Locked in v2",
+        "Still in Sablier"
+      ],
+      datasets: [{
+        data: [424400, 377364, 324526, 42910],
+        backgroundColor: [
+          "rgba(254,202,202,0.95)",
+          "#ff9501",
+          "#2d9b87",
+          "rgba(191,219,254,0.95)"
+        ],
+        borderColor: [
+          "#fca5a5",
+          "#e07800",
+          "#22796a",
+          "#93c5fd"
+        ],
+        borderWidth: 1.5,
+        hoverOffset: 6
+      }]
+    },
+    options: {
+      cutout: "66%",
+      responsive: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: c => ` ${c.label}: ${c.parsed.toLocaleString()} GLM`
+          }
+        }
+      }
+    }
   });
 }());
 
