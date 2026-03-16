@@ -414,10 +414,12 @@
       </a>
       <ul class="nav-links" aria-label="Section links">
         <li><a href="#funds">Funds</a></li>
+        <li><a href="#new-users">New Users</a></li>
         <li><a href="#participation">Participation</a></li>
         <li><a href="#allocations">Allocations</a></li>
         <li><a href="#epochs">Epochs</a></li>
         <li><a href="#rankings">Rankings</a></li>
+        <li><a href="#epoch0">Epoch 0</a></li>
         <li><a href="#sablier">Sablier</a></li>
         <li><a href="#migration">Migration</a></li>
       </ul>
@@ -483,6 +485,91 @@
         </div>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- ══════════ NEW USERS ══════════ -->
+<section class="section" id="new-users">
+  <div class="container">
+    <p class="section-eyebrow">User Growth</p>
+    <h2 class="section-title">When did new users enter Octant v1?</h2>
+    <p class="section-sub">
+      This section tracks the first appearance of user addresses in Octant v1 budget data.
+    </p>
+
+    <div class="grid-4" style="margin-bottom:24px;">
+      <div class="card" style="text-align:center;">
+        <div class="card-label">Total Unique Users with Budget</div>
+        <div class="card-value" style="font-size:42px;">2,641</div>
+        <div class="card-note">Unique addresses in Octant v1 budget files across Epochs 1–11</div>
+      </div>
+      <div class="card" style="text-align:center;">
+        <div class="card-label">Largest Growth Epoch</div>
+        <div class="card-value" style="font-size:42px; color:var(--mint);">Epoch 7</div>
+        <div class="card-note">The single biggest intake of first-time budgeted users</div>
+      </div>
+      <div class="card" style="text-align:center;">
+        <div class="card-label">New Users in Epoch 7</div>
+        <div class="card-value" style="font-size:42px; color:var(--orange);">1,266</div>
+        <div class="card-note">58.6% of all budgeted users in Epoch 7 were first-time entrants</div>
+      </div>
+      <div class="card" style="text-align:center;">
+        <div class="card-label">New Users After Epoch 7</div>
+        <div class="card-value" style="font-size:42px; color:var(--gray);">129</div>
+        <div class="card-note">Only 4.9% of all unique users entered after the main growth wave</div>
+      </div>
+    </div>
+
+    <div class="grid-2" style="margin-top:0;">
+      <div class="chart-card">
+        <div class="chart-title">New Users by Epoch</div>
+        <div class="chart-sub">First-time budgeted addresses entering Octant v1 in each epoch</div>
+        <canvas id="newUsersStackedChart" role="img" height="280" aria-label="Bar chart of new users per epoch. E1: 515, E2: 89, E3: 59, E4: 36, E5: 376, E6: 171, E7: 1266, E8: 31, E9: 53, E10: 30, E11: 15.">First-time budgeted users per epoch: E1 515, E2 89, E3 59, E4 36, E5 376, E6 171, E7 1266, E8 31, E9 53, E10 30, E11 15.</canvas>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">Cumulative Unique Users with Budget</div>
+        <div class="chart-sub">Total distinct addresses that have ever had a budget, after each epoch</div>
+        <canvas id="cumulativeUsersChart" role="img" height="280" aria-label="Line chart of cumulative unique budget holders. E1: 515, E2: 604, E3: 663, E4: 699, E5: 1075, E6: 1246, E7: 2512, E8: 2543, E9: 2596, E10: 2626, E11: 2641.">Cumulative unique budget holders after each epoch: E1 515, E2 604, E3 663, E4 699, E5 1075, E6 1246, E7 2512, E8 2543, E9 2596, E10 2626, E11 2641.</canvas>
+      </div>
+    </div>
+
+    <div style="margin-top:24px;">
+      <div class="chart-card">
+        <div class="chart-title">New Users Breakdown per Epoch</div>
+        <div class="chart-sub">Epoch-by-epoch figures for total budget holders, new addresses, and returning addresses</div>
+        <div style="overflow-x:auto; margin-top:4px;">
+          <table class="ret-table" id="newUsersTable">
+            <thead>
+              <tr>
+                <th scope="col">Epoch</th>
+                <th scope="col">Total with Budget</th>
+                <th scope="col">New (first-time)</th>
+                <th scope="col">Returning</th>
+                <th scope="col">% New</th>
+                <th scope="col">Cumulative Unique</th>
+              </tr>
+            </thead>
+            <tbody id="newUsersBody">
+              <!-- populated by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="insight">
+      <strong>Octant v1 did not grow at a steady pace.</strong> After modest expansion in Epochs 2–4,
+      user growth accelerated sharply in Epoch 5 and surged again in Epoch 7, which alone brought in 1,266 first-time budgeted users,
+      the vast majority of them through SheFi and Celo community onboarding initiatives.
+      Together, Epochs 5–7 accounted for 68.6% of all new users observed across Epochs 1–11.
+      Growth then slowed markedly, with just 129 additional users entering from Epoch 8 onward.
+    </div>
+
+    <p style="font-size:12px; color:var(--gray); margin-top:16px; line-height:1.6;">
+      <strong>Methodology:</strong> New users are defined here as addresses appearing in Octant v1 budget data for the first time in a given epoch.
+      This measures entry into the budgeted user base, not necessarily first observable allocation activity.
+    </p>
+
   </div>
 </section>
 
@@ -712,6 +799,71 @@
   </div>
 </section>
 
+<!-- ══════════ EPOCH 0 COHORT ══════════ -->
+<section class="section" id="epoch0">
+  <div class="container">
+    <p class="section-eyebrow">Early Onboarding Cohort</p>
+    <h2 class="section-title">What happened to Epoch 0 participants?</h2>
+    <p class="section-sub">
+      Before Octant v1 launched, 656 addresses took part in a <a href="https://golem.foundation/2023/07/28/epoch-zero-results.html" target="_blank" rel="noopener noreferrer" style="color:inherit; text-decoration:underline; text-underline-offset:2px;">promotional event called Epoch 0</a>. This section tracks how many later became active participants in Octant v1 allocation windows, how long they stayed active, and how many followed Octant to v2.
+    </p>
+    <p style="font-size:13px; color:var(--gray); margin-bottom:44px;"><small>Patron Mode participation is tracked separately, as it is passive in nature.</small></p>
+
+    <!-- KPI cards -->
+    <div class="grid-4" style="margin-bottom:24px;">
+      <div class="card">
+        <div class="card-label">Epoch 0 participants</div>
+        <div class="card-value">656</div>
+        <div class="card-note">Pre-launch cohort size</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Took part in v1 allocation windows</div>
+        <div class="card-value">245</div>
+        <div class="card-note">37.3% of the cohort</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Still allocating in Epoch 11</div>
+        <div class="card-value">34</div>
+        <div class="card-note">16.3% of the Epoch 1 peak</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Migrated to Octant v2</div>
+        <div class="card-value">54</div>
+        <div class="card-note">Includes 3 Patron Mode users</div>
+      </div>
+    </div>
+
+    <!-- Charts -->
+    <div class="grid-2" style="margin-bottom:24px;">
+      <div class="chart-card">
+        <div class="chart-title">Epoch 0 activity across v1 allocation windows</div>
+        <div class="chart-sub">Addresses from the Epoch 0 cohort seen in allocation data per epoch</div>
+        <canvas id="epoch0ActivityChart" role="img" height="260" aria-label="Line chart of Epoch 0 cohort active allocators per epoch. E1: 208, E2: 168, E3: 128, E4: 115, E5: 88, E6: 76, E7: 62, E8: 54, E9: 46, E10: 53, E11: 34. The cohort peaked at 208 visible allocators in Epoch 1 and declined to 34 by Epoch 11.">Epoch 0 cohort active allocators per allocation window: E1 208, E2 168, E3 128, E4 115, E5 88, E6 76, E7 62, E8 54, E9 46, E10 53, E11 34.</canvas>
+        <p style="font-size:12px; color:var(--gray); margin-top:10px;">The Epoch 0 cohort peaked at 208 visible allocators in Epoch 1 and declined to 34 by Epoch 11.</p>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">Migration to v2 by last active allocation epoch</div>
+        <div class="chart-sub">Migrated vs. did not migrate, grouped by when the address last appeared in allocation data</div>
+        <canvas id="epoch0MigrationChart" role="img" height="260" aria-label="Grouped bar chart of Epoch 0 migration to v2 by last active epoch bucket. Last active E1-E4: 5 migrated, 122 did not. Last active E5-E9: 2 migrated, 56 did not. Last active E10: 11 migrated, 15 did not. Last active E11: 32 migrated, 2 did not.">Epoch 0 cohort migration to Octant v2 by last active epoch: last active E1–E4 — 5 migrated, 122 did not; last active E5–E9 — 2 migrated, 56 did not; last active E10 — 11 migrated, 15 did not; last active E11 — 32 migrated, 2 did not.</canvas>
+        <p style="font-size:12px; color:var(--gray); margin-top:10px;">Migration to v2 was concentrated among the cohort's late-stage active allocators.</p>
+      </div>
+    </div>
+
+    <!-- Insight box -->
+    <div class="insight">
+      <strong>A broad top-of-funnel with a committed migrating core.</strong>
+      Epoch 0 created a meaningful but relatively shallow top-of-funnel for Octant v1. Of 656 pre-launch participants, 245 later took part in allocation windows, but only 34 remained active through Epoch 11. Late-stage retention was highly predictive of migration: 32 of those 34 users moved to Octant v2 before the cutoff.
+      Active allocation does not capture every form of v1 participation, however. Three Epoch 0 participants used Patron Mode and later migrated to Octant v2.
+    </div>
+
+    <!-- Methodology note -->
+    <p style="font-size:12px; color:var(--gray); margin-top:16px; line-height:1.6;">
+      <em>Note: Users who enabled Patron Mode are excluded from the allocation-window activity charts. Because they routed 100% of their user rewards to the Matching Fund, they are not counted among Octant v1 allocators. They are, however, included in the total number of users who migrated to v2 where relevant.</em>
+    </p>
+
+  </div>
+</section>
+
 <!-- ══════════ SABLIER ONBOARDING ══════════ -->
 <section class="section" id="sablier">
   <div class="container">
@@ -846,7 +998,7 @@
         <div class="sablier-fate-inner">
           <div style="width:180px; flex-shrink:0;">
             <canvas id="sablierFateChart" role="img" width="180" height="180"
-              aria-label="GLM fate donut chart. Cancelled: 424,400 GLM (36.3%). Withdrawn and attributed to v2 locks: 324,526 GLM (27.8%). Withdrawn not migrated: 377,365 GLM (32.3%). Still in Sablier: 42,910 GLM (3.7%)."></canvas>
+              aria-label="GLM fate donut chart. Cancelled: 424,400 GLM (36.3%). Withdrawn and attributed to v2 locks: 324,526 GLM (27.8%). Withdrawn not migrated: 377,365 GLM (32.3%). Still in Sablier: 42,910 GLM (3.7%).">GLM fate breakdown: Cancelled 424,400 (36.3%), Withdrawn not migrated to v2 377,365 (32.3%), Withdrawn and attributed to v2 locks 324,526 (27.8%), Still in Sablier 42,910 (3.7%).</canvas>
           </div>
           <div style="display:flex; flex-direction:column; gap:11px; flex:1;">
             <div class="fund-legend-row">
@@ -874,10 +1026,8 @@
               <span class="fund-pct">3.7%</span>
             </div>
             <div class="sablier-legend-note">
-              The Raffle cohort accounts for <strong style="color:var(--dark);">98%</strong> of all
-              GLM attributed to v2 migration — 319,126 of 324,526 GLM.
-              <br><em>Locked in v2</em> is capped at the amount attributable to the analyzed
-              onboarding streams for each address.
+              <p style="margin:0 0 5px;">The Raffle cohort accounts for <strong style="color:var(--dark);">98%</strong> of all GLM attributed to v2 migration — 319,126 of 324,526 GLM.</p>
+              <p style="margin:0;"><em>Locked in v2</em> is capped at the amount attributable to the analyzed onboarding streams for each address.</p>
             </div>
           </div>
         </div>
@@ -1662,6 +1812,123 @@ Chart.defaults.color = "#9ea39e";
 }());
 
 /* ════════════════════════════════════════════════════
+   5b-2. NEW USERS CHARTS (all epochs 1–11, budget data)
+   ════════════════════════════════════════════════════ */
+(function () {
+  const newUsersData = [
+    { epoch:  1, total:  515, newUsers:  515, returning:    0, cumulative:  515 },
+    { epoch:  2, total:  586, newUsers:   89, returning:  497, cumulative:  604 },
+    { epoch:  3, total:  603, newUsers:   59, returning:  544, cumulative:  663 },
+    { epoch:  4, total:  593, newUsers:   36, returning:  557, cumulative:  699 },
+    { epoch:  5, total:  898, newUsers:  376, returning:  522, cumulative: 1075 },
+    { epoch:  6, total:  982, newUsers:  171, returning:  811, cumulative: 1246 },
+    { epoch:  7, total: 2162, newUsers: 1266, returning:  896, cumulative: 2512 },
+    { epoch:  8, total: 1296, newUsers:   31, returning: 1265, cumulative: 2543 },
+    { epoch:  9, total: 1034, newUsers:   53, returning:  981, cumulative: 2596 },
+    { epoch: 10, total: 1015, newUsers:   30, returning:  985, cumulative: 2626 },
+    { epoch: 11, total:  992, newUsers:   15, returning:  977, cumulative: 2641 },
+  ];
+
+  const labels = newUsersData.map(d => `E${d.epoch}`);
+
+  /* — Bar chart: new users per epoch — */
+  new Chart(document.getElementById("newUsersStackedChart").getContext("2d"), {
+    type: "bar",
+    data: {
+      labels: labels,
+      datasets: [{
+        label: "New users",
+        data: newUsersData.map(d => d.newUsers),
+        backgroundColor: newUsersData.map(d =>
+          d.epoch === 7 ? "rgba(45,155,135,0.90)" :
+          d.epoch === 5 ? "rgba(255,149,1,0.75)"  :
+                          "rgba(45,155,135,0.35)"
+        ),
+        borderRadius: 5,
+        barPercentage: 0.65
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            afterLabel: function(ctx) {
+              const d = newUsersData[ctx.dataIndex];
+              const pct = (d.newUsers / d.total * 100).toFixed(1);
+              return `${pct}% of epoch's budget holders`;
+            }
+          }
+        }
+      },
+      scales: {
+        x: { grid: { display: false } },
+        y: {
+          beginAtZero: true,
+          grid: { color: "#f0f0f0" },
+          ticks: { callback: v => v.toLocaleString() }
+        }
+      }
+    }
+  });
+
+  /* — Line chart: cumulative unique users — */
+  new Chart(document.getElementById("cumulativeUsersChart").getContext("2d"), {
+    type: "line",
+    data: {
+      labels: labels,
+      datasets: [{
+        label: "Cumulative unique budget holders",
+        data: newUsersData.map(d => d.cumulative),
+        borderColor: "#ff9501",
+        backgroundColor: "rgba(255,149,1,0.08)",
+        borderWidth: 2.5,
+        pointRadius: newUsersData.map(d => d.epoch === 7 ? 7 : 4),
+        pointBackgroundColor: newUsersData.map(d => d.epoch === 7 ? "#ff9501" : "#ff9501"),
+        tension: 0.3,
+        fill: true
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: ctx => ` ${ctx.parsed.y.toLocaleString()} unique addresses` } }
+      },
+      scales: {
+        y: {
+          beginAtZero: false,
+          min: 400,
+          grid: { color: "#f0f0f0" },
+          ticks: { callback: v => v.toLocaleString() }
+        },
+        x: { grid: { display: false } }
+      }
+    }
+  });
+
+  /* — Table — */
+  const tbody = document.getElementById("newUsersBody");
+  newUsersData.forEach(d => {
+    const pct = (d.newUsers / d.total * 100).toFixed(1);
+    const pillClass = pct >= 30 ? "pill-green" : pct >= 10 ? "pill-yellow" : "pill-red";
+    const isE7 = d.epoch === 7;
+    const tr = document.createElement("tr");
+    if (isE7) tr.style.background = "rgba(45,155,135,0.06)";
+    tr.innerHTML = `
+      <td style="font-weight:600;">${isE7 ? "★ " : ""}E${d.epoch}</td>
+      <td style="font-family:var(--font-mono);">${d.total.toLocaleString()}</td>
+      <td style="font-family:var(--font-mono); color:var(--mint); font-weight:${isE7 ? "800" : "700"};">${d.newUsers.toLocaleString()}</td>
+      <td style="font-family:var(--font-mono); color:var(--gray);">${d.returning.toLocaleString()}</td>
+      <td><span class="pill ${pillClass}">${pct}%</span></td>
+      <td style="font-family:var(--font-mono); font-weight:700;">${d.cumulative.toLocaleString()}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}());
+
+/* ════════════════════════════════════════════════════
    5c. CLAIMED / DIRECT TABLE
    ════════════════════════════════════════════════════ */
 (function () {
@@ -1791,7 +2058,7 @@ Chart.defaults.color = "#9ea39e";
         <div class="epoch-meta-cell">
           <div class="epoch-meta-key">${ep.n === 11 ? "Total Funding" : "Total w/ Matching"}</div>
           <div class="epoch-meta-val">${ep.donated < 1 ? ep.donated.toFixed(4) : ep.donated.toFixed(1)}</div>
-          <div class="epoch-meta-note">${ep.n === 11 ? "no Golem Foundation matching" : `ETH to projects${ep.rawDonations != null ? `<br><span style="font-size:10px;">direct donations: ${ep.rawDonations} ETH</span>` : ""}`}</div>
+          <div class="epoch-meta-note">${ep.n === 11 ? "no Golem Foundation matching" : `ETH to projects${ep.rawDonations != null ? `<span style="display:block; font-size:10px;">direct donations: ${ep.rawDonations} ETH</span>` : ""}`}</div>
         </div>
       </div>
       <div class="chart-card epoch-chart-wrap">
@@ -1917,6 +2184,124 @@ Chart.defaults.color = "#9ea39e";
       <span class="ranking-eth">${p.eth.toFixed(6)} ETH</span>
     `;
     list.appendChild(row);
+  });
+}());
+
+/* ════════════════════════════════════════════════════
+   7b. EPOCH 0 COHORT — ACTIVITY LINE CHART
+   ════════════════════════════════════════════════════ */
+(function () {
+  const labels = ["E1","E2","E3","E4","E5","E6","E7","E8","E9","E10","E11"];
+  const data   = [208, 168, 128, 115, 88, 76, 62, 54, 46, 53, 34];
+  const ctx = document.getElementById("epoch0ActivityChart").getContext("2d");
+  new Chart(ctx, {
+    type: "line",
+    data: {
+      labels,
+      datasets: [{
+        label: "Epoch 0 allocators visible",
+        data,
+        borderColor: "#ff9501",
+        backgroundColor: "rgba(255,149,1,.10)",
+        borderWidth: 2.5,
+        fill: true,
+        pointRadius: 4,
+        pointBackgroundColor: "#ff9501",
+        pointBorderColor: "#fff",
+        pointBorderWidth: 1.5,
+        tension: 0.3
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: c => ` ${c.parsed.y} addresses from Epoch 0 cohort`
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: { display: false },
+          border: { display: false },
+          ticks: { color: "#9ea39e", font: { size: 12 } }
+        },
+        y: {
+          beginAtZero: true,
+          grid: { color: "#ebebeb" },
+          border: { display: false },
+          title: { display: true, text: "Addresses", color: "#9ea39e", font: { size: 12 } },
+          ticks: { color: "#9ea39e", font: { size: 12 } }
+        }
+      }
+    }
+  });
+}());
+
+/* ════════════════════════════════════════════════════
+   7c. EPOCH 0 COHORT — MIGRATION GROUPED BAR CHART
+   ════════════════════════════════════════════════════ */
+(function () {
+  const labels   = ["Last active E1–E4", "Last active E5–E9", "Last active E10", "Last active E11"];
+  const migrated = [5, 2, 11, 32];
+  const stayed   = [122, 56, 15, 2];
+  const ctx = document.getElementById("epoch0MigrationChart").getContext("2d");
+  new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels,
+      datasets: [
+        {
+          label: "Migrated to v2",
+          data: migrated,
+          backgroundColor: "#ff9501",
+          borderRadius: 4,
+          stack: "stack"
+        },
+        {
+          label: "Did not migrate",
+          data: stayed,
+          backgroundColor: "#ebebeb",
+          borderRadius: 4,
+          stack: "stack"
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      interaction: { mode: "index", intersect: false },
+      plugins: {
+        legend: { position: "bottom", labels: { boxWidth: 12, padding: 16 } },
+        tooltip: {
+          callbacks: {
+            afterBody: (items) => {
+              const i = items[0].dataIndex;
+              const total = migrated[i] + stayed[i];
+              const pct = ((migrated[i] / total) * 100).toFixed(1);
+              return [`Migration rate: ${pct}% (${migrated[i]}/${total})`];
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          stacked: true,
+          grid: { display: false },
+          border: { display: false },
+          ticks: { color: "#9ea39e", font: { size: 12 } }
+        },
+        y: {
+          stacked: true,
+          beginAtZero: true,
+          grid: { color: "#ebebeb" },
+          border: { display: false },
+          title: { display: true, text: "Addresses", color: "#9ea39e", font: { size: 12 } },
+          ticks: { color: "#9ea39e", font: { size: 12 } }
+        }
+      }
+    }
   });
 }());
 
