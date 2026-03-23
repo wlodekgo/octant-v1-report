@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" defer></script>
   <style>
     /* ─── Design tokens (from Octant v1 website) ─── */
     :root {
@@ -113,7 +113,7 @@
     .hero-kpi-val .accent { color: var(--orange); }
 
     /* ─── Sections ─── */
-    .section { padding: 80px 0; border-bottom: 1px solid var(--border); }
+    .section { padding: 80px 0; border-bottom: 1px solid var(--border); scroll-margin-top: 56px; }
     .section:last-of-type { border-bottom: none; }
     .section-eyebrow {
       font-size: 11px; font-weight: 700;
@@ -382,6 +382,12 @@
       .epoch-meta-grid { grid-template-columns: repeat(3, 1fr); }
       .ranking-row { grid-template-columns: 28px 150px 1fr 90px; }
     }
+    @media (max-width: 360px) {
+      .hero-kpis { grid-template-columns: 1fr; }
+      .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+      .epoch-meta-grid { grid-template-columns: 1fr; }
+      .migration-grid { grid-template-columns: 1fr; }
+    }
     @media (max-width: 640px) {
       .container { padding: 0 20px; }
       .hero-kpis { grid-template-columns: 1fr 1fr; }
@@ -392,12 +398,17 @@
       .epoch-meta-grid { grid-template-columns: 1fr 1fr; }
       .ranking-row { grid-template-columns: 24px 1fr 80px; }
       .ranking-bar-bg { display: none; }
-      .nav-inner { flex-direction: column; height: auto; padding: 8px 0; gap: 4px; }
-      .nav-links { overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; gap: 16px; width: 100%; }
-      .nav-links::-webkit-scrollbar { display: none; }
-      .section { padding: 56px 0; }
+      .nav-inner { flex-direction: column; height: auto; padding: 8px 0; gap: 6px; }
+      .nav-links { flex-wrap: wrap; justify-content: center; gap: 4px 14px; width: 100%; padding-bottom: 4px; }
+      .nav-links a { font-size: 12px; }
+      .section { padding: 56px 0; scroll-margin-top: 136px; }
       .hero { padding: 48px 0 40px; }
       .sablier-fate-inner { flex-direction: column; align-items: flex-start; }
+      /* Reduce padding on cards and chart cards to give content more room */
+      .card { padding: 18px 16px; }
+      .chart-card { padding: 18px 16px; }
+      /* Scale down large KPI-style values inside narrow 2-column cards */
+      .card-value { font-size: 26px; }
     }
   </style>
 </head>
@@ -414,11 +425,11 @@
       </a>
       <ul class="nav-links" aria-label="Section links">
         <li><a href="#funds">Funds</a></li>
-        <li><a href="#new-users">New Users</a></li>
-        <li><a href="#participation">Participation</a></li>
         <li><a href="#allocations">Allocations</a></li>
         <li><a href="#epochs">Epochs</a></li>
         <li><a href="#rankings">Rankings</a></li>
+        <li><a href="#participation">Participation</a></li>
+        <li><a href="#new-users">New Users</a></li>
         <li><a href="#epoch0">Epoch 0</a></li>
         <li><a href="#sablier">Sablier</a></li>
         <li><a href="#migration">Migration</a></li>
@@ -433,8 +444,7 @@
     <p class="hero-eyebrow">Final Analytics Report · March 2026</p>
     <h1 class="hero-title">Octant v1<br>by the numbers</h1>
     <p class="hero-sub">
-      A comprehensive look at 11 epochs of public goods funding —
-      participation, retention, project rankings and the migration to Octant v2.
+      A data-led look at 11 epochs of public goods funding powered by staking yield — from fund flows and community participation to the transition to Octant v2.
     </p>
     <div class="hero-kpis" role="list">
       <div class="hero-kpi" role="listitem">
@@ -442,16 +452,16 @@
         <div class="hero-kpi-label">Staking Proceeds</div>
       </div>
       <div class="hero-kpi" role="listitem">
-        <div class="hero-kpi-val"><span class="accent">2,867</span><span class="unit">ETH</span></div>
-        <div class="hero-kpi-label">Donated to Projects</div>
-      </div>
-      <div class="hero-kpi" role="listitem">
         <div class="hero-kpi-val"><span class="accent">1,357</span></div>
         <div class="hero-kpi-label">Unique Allocators</div>
       </div>
       <div class="hero-kpi" role="listitem">
-        <div class="hero-kpi-val"><span class="accent">11</span></div>
-        <div class="hero-kpi-label">Epochs Completed</div>
+        <div class="hero-kpi-val"><span class="accent">2,867</span><span class="unit">ETH</span></div>
+        <div class="hero-kpi-label">Donated to Projects</div>
+      </div>
+      <div class="hero-kpi" role="listitem">
+        <div class="hero-kpi-val"><span class="accent">126</span></div>
+        <div class="hero-kpi-label">Projects Funded</div>
       </div>
     </div>
   </div>
@@ -465,13 +475,14 @@
     <p class="section-eyebrow">Fund Distribution</p>
     <h2 class="section-title">Where did the ETH go?</h2>
     <p class="section-sub">
-      Breakdown of the 8,262.58 ETH in staking proceeds across all v1 epochs.
-      Matching Fund is embedded within the "Donated to projects" figure.
+      Breakdown of the 8,262.58 ETH in staking proceeds generated across all v1 epochs. Octant v1 funded public goods from yield while preserving treasury principal. Matching is included in &#8220;Donated to projects&#8221;.
     </p>
 
     <div class="fund-layout">
       <div class="fund-chart-wrap">
-        <canvas id="fundChart" role="img" width="300" height="300" aria-label="Fund distribution donut chart">Breakdown of 8,262.58 ETH: Donated to projects 2,867.55 ETH (34.7%), Golem Foundation costs &amp; staking 2,406.62 ETH (29.1%), Claimed by users 1,780.53 ETH (21.6%), Participation Promotion Fund held 667.46 ETH (8.1%), Community Fund 344.19 ETH (4.2%), Epoch 11 Matching to v2 121.14 ETH (1.5%), Unclaimed rewards 75.10 ETH (0.9%).</canvas>
+        <div style="max-width:300px;width:100%;margin:0 auto;">
+          <canvas id="fundChart" role="img" aria-label="Fund distribution donut chart">Breakdown of 8,262.58 ETH: Donated to projects 2,867.55 ETH (34.7%), Golem Foundation costs &amp; staking 2,406.62 ETH (29.1%), Claimed by users 1,780.53 ETH (21.6%), Participation Promotion Fund held 667.46 ETH (8.1%), Community Fund 344.19 ETH (4.2%), Epoch 11 Matching to v2 121.14 ETH (1.5%), Unclaimed rewards 75.10 ETH (0.9%).</canvas>
+        </div>
       </div>
       <div>
         <div class="fund-legend" id="fundLegend">
@@ -488,68 +499,77 @@
   </div>
 </section>
 
-<!-- ══════════ NEW USERS ══════════ -->
-<section class="section" id="new-users">
+<!-- ══════════ ALLOCATIONS ══════════ -->
+<section class="section" id="allocations">
   <div class="container">
-    <p class="section-eyebrow">User Growth</p>
-    <h2 class="section-title">When did new users enter Octant v1?</h2>
+    <p class="section-eyebrow">Allocations</p>
+    <h2 class="section-title">How the Octant Community Allocated Rewards</h2>
     <p class="section-sub">
-      This section tracks the first appearance of user addresses in Octant v1 budget data.
+      How users split rewards across projects, self-claims, and unclaimed balances — plus how concentrated donations became in each epoch.
     </p>
 
-    <div class="grid-4" style="margin-bottom:24px;">
-      <div class="card" style="text-align:center;">
-        <div class="card-label">Total Unique Users with Budget</div>
-        <div class="card-value" style="font-size:42px;">2,641</div>
-        <div class="card-note">Unique addresses in Octant v1 budget files across Epochs 1–11</div>
+    <div class="chart-card">
+      <div class="chart-title">Allocated Distribution (Epochs 1–11)</div>
+      <div class="chart-sub">ETH donated to projects vs claimed by users vs unclaimed rewards per epoch</div>
+      <canvas id="splitChart" role="img" height="280" aria-label="Donated vs claimed per epoch stacked bar">ETH allocation per epoch — donated to projects / claimed by users / unclaimed: E1 249.71/70.39/9.51, E2 231.22/134.02/0.28, E3 359.41/213.98/1.81, E4 302.36/198.40/11.53, E5 322.61/187.67/14.93, E6 288.20/181.45/1.99, E7 298.67/203.88/3.46, E8 289.63/170.38/14.13, E9 242.18/164.47/5.22, E10 282.93/179.44/2.06, E11 0.63/76.45/10.18.</canvas>
+    </div>
+
+    <div class="grid-2" style="margin-top:24px;">
+      <div class="chart-card">
+        <div class="chart-title">Avg Projects Selected per Donor</div>
+        <div class="chart-sub">Average number of projects each donating allocator funded per epoch. Epoch 11 shown separately — only Protocol Guild was available.</div>
+        <canvas id="avgProjectsChart" role="img" height="240" aria-label="Average projects per donor per epoch bar chart">Average projects funded per donor: E1 6.65, E2 5.51, E3 6.80, E4 5.74, E5 4.51, E6 4.35, E7 3.84, E8 5.09, E9 5.10, E10 4.63, E11 1.00.</canvas>
       </div>
-      <div class="card" style="text-align:center;">
-        <div class="card-label">Largest Growth Epoch</div>
-        <div class="card-value" style="font-size:42px; color:var(--mint);">Epoch 7</div>
-        <div class="card-note">The single biggest intake of first-time budgeted users</div>
-      </div>
-      <div class="card" style="text-align:center;">
-        <div class="card-label">New Users in Epoch 7</div>
-        <div class="card-value" style="font-size:42px; color:var(--orange);">1,266</div>
-        <div class="card-note">58.6% of all budgeted users in Epoch 7 were first-time entrants</div>
-      </div>
-      <div class="card" style="text-align:center;">
-        <div class="card-label">New Users After Epoch 7</div>
-        <div class="card-value" style="font-size:42px; color:var(--gray);">129</div>
-        <div class="card-note">Only 4.9% of all unique users entered after the main growth wave</div>
+      <div class="chart-card">
+        <div class="chart-title">Largest donor's share</div>
+        <div class="chart-sub">Share of all direct donations controlled by the single largest donor per epoch</div>
+        <canvas id="top1Chart" role="img" height="240" aria-label="Largest donor's share per epoch bar chart">Top-1 donor concentration per epoch: E1 34.7%, E2 27.6%, E3 43.9%, E4 20.9%, E5 58.1%, E6 64.3%, E7 14.2%, E8 66.2%, E9 41.4%, E10 58.8%, E11 32.9%.</canvas>
       </div>
     </div>
 
-    <div class="grid-2" style="margin-top:0;">
-      <div class="chart-card">
-        <div class="chart-title">New Users by Epoch</div>
-        <div class="chart-sub">First-time budgeted addresses entering Octant v1 in each epoch</div>
-        <canvas id="newUsersStackedChart" role="img" height="280" aria-label="Bar chart of new users per epoch. E1: 515, E2: 89, E3: 59, E4: 36, E5: 376, E6: 171, E7: 1266, E8: 31, E9: 53, E10: 30, E11: 15.">First-time budgeted users per epoch: E1 515, E2 89, E3 59, E4 36, E5 376, E6 171, E7 1266, E8 31, E9 53, E10 30, E11 15.</canvas>
-      </div>
-      <div class="chart-card">
-        <div class="chart-title">Cumulative Unique Users with Budget</div>
-        <div class="chart-sub">Total distinct addresses that have ever had a budget, after each epoch</div>
-        <canvas id="cumulativeUsersChart" role="img" height="280" aria-label="Line chart of cumulative unique budget holders. E1: 515, E2: 604, E3: 663, E4: 699, E5: 1075, E6: 1246, E7: 2512, E8: 2543, E9: 2596, E10: 2626, E11: 2641.">Cumulative unique budget holders after each epoch: E1 515, E2 604, E3 663, E4 699, E5 1075, E6 1246, E7 2512, E8 2543, E9 2596, E10 2626, E11 2641.</canvas>
-      </div>
+    <div class="insight">
+      <strong>Narrowing breadth, concentrated power.</strong>
+      Across Epochs 1–10, the average donor funded 3.84–6.80 projects per epoch.
+      Top-1 concentration swung widely — from 14.2% in E7 (659 allocators, broadest participation)
+      to 66.2% in E8 — reflecting how a single large donor could dominate in lower-turnout epochs.
+      Epoch 11 was a structural transition epoch: with only Protocol Guild available,
+      project selection was not possible by design.
     </div>
 
     <div style="margin-top:24px;">
       <div class="chart-card">
-        <div class="chart-title">New Users Breakdown per Epoch</div>
-        <div class="chart-sub">Epoch-by-epoch figures for total budget holders, new addresses, and returning addresses</div>
-        <div style="overflow-x:auto; margin-top:4px;">
-          <table class="ret-table" id="newUsersTable">
+        <div class="chart-title">Claimed Rewards vs Direct Donations</div>
+        <div class="chart-sub">Per epoch — and totals across all v1</div>
+        <div class="grid-4" style="gap:10px; margin-bottom:20px;">
+          <div style="text-align:center; padding:14px 8px; background:var(--surface2); border-radius:8px;">
+            <div style="font-family:var(--font-serif); font-size:26px; color:var(--dark); line-height:1.1;">107.5</div>
+            <div style="font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.07em; color:var(--gray); margin-top:4px;">Direct ETH</div>
+          </div>
+          <div style="text-align:center; padding:14px 8px; background:var(--surface2); border-radius:8px;">
+            <div style="font-family:var(--font-serif); font-size:26px; color:var(--dark); line-height:1.1;">1,780.5</div>
+            <div style="font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.07em; color:var(--gray); margin-top:4px;">Claimed ETH</div>
+          </div>
+          <div style="text-align:center; padding:14px 8px; background:var(--sea-mist); border-radius:8px;">
+            <div style="font-family:var(--font-serif); font-size:26px; color:var(--mint); line-height:1.1;">16.57x</div>
+            <div style="font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.07em; color:var(--mint); margin-top:4px;">Ratio</div>
+          </div>
+          <div style="text-align:center; padding:14px 8px; background:var(--seashell); border-radius:8px;">
+            <div style="font-family:var(--font-serif); font-size:26px; color:var(--orange); line-height:1.1;">5.7%</div>
+            <div style="font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.07em; color:var(--orange); margin-top:4px;">Direct Share</div>
+          </div>
+        </div>
+        <div style="overflow-x:auto;">
+          <table class="ret-table" id="claimedDirectTable" aria-label="Claimed rewards vs direct donations per epoch">
             <thead>
               <tr>
                 <th scope="col">Epoch</th>
-                <th scope="col">Total with Budget</th>
-                <th scope="col">New (first-time)</th>
-                <th scope="col">Returning</th>
-                <th scope="col">% New</th>
-                <th scope="col">Cumulative Unique</th>
+                <th scope="col">Direct (ETH)</th>
+                <th scope="col">Claimed (ETH)</th>
+                <th scope="col">Ratio</th>
+                <th scope="col">Direct Share</th>
               </tr>
             </thead>
-            <tbody id="newUsersBody">
+            <tbody id="claimedDirectBody">
               <!-- populated by JS -->
             </tbody>
           </table>
@@ -557,19 +577,59 @@
       </div>
     </div>
 
-    <div class="insight">
-      <strong>Octant v1 did not grow at a steady pace.</strong> After modest expansion in Epochs 2–4,
-      user growth accelerated sharply in Epoch 5 and surged again in Epoch 7, which alone brought in 1,266 first-time budgeted users,
-      the vast majority of them through SheFi and Celo community onboarding initiatives.
-      Together, Epochs 5–7 accounted for 68.6% of all new users observed across Epochs 1–11.
-      Growth then slowed markedly, with just 129 additional users entering from Epoch 8 onward.
+    <div style="margin-top:24px;">
+      <div class="chart-card">
+        <div class="chart-title">Project funding per 1 ETH donated</div>
+        <div class="chart-sub">Project funding generated per 1 ETH of direct donations (E11 had no Golem Foundation matching)</div>
+        <canvas id="leverageChart" role="img" height="280" aria-label="Project funding per 1 ETH donated per epoch bar chart">Project funding per 1 ETH of direct donations: E1 45.44x, E2 59.35x, E3 15.42x, E4 63.16x, E5 18.30x, E6 20.14x, E7 66.00x, E8 20.62x, E9 62.60x, E10 19.07x, E11 1.01x (no Golem Foundation matching).</canvas>
+      </div>
     </div>
+  </div>
+</section>
 
-    <p style="font-size:12px; color:var(--gray); margin-top:16px; line-height:1.6;">
-      <strong>Methodology:</strong> New users are defined here as addresses appearing in Octant v1 budget data for the first time in a given epoch.
-      This measures entry into the budgeted user base, not necessarily first observable allocation activity.
+<!-- ══════════ EPOCH EXPLORER ══════════ -->
+<section class="section" id="epochs">
+  <div class="container">
+    <p class="section-eyebrow">Epoch Explorer</p>
+    <h2 class="section-title">Dive into each epoch</h2>
+    <p class="section-sub">
+      Select an epoch to see its key stats and top funded projects (funding includes matching).
     </p>
 
+    <div class="epoch-tabs" role="tablist" aria-label="Epoch selector">
+      <!-- populated by JS -->
+    </div>
+
+    <div id="epochPanels">
+      <!-- populated by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ ALL-TIME RANKINGS ══════════ -->
+<section class="section" id="rankings">
+  <div class="container">
+    <p class="section-eyebrow">All-Time Rankings</p>
+    <h2 class="section-title">Top projects across all v1 epochs</h2>
+    <p class="section-sub">
+      Aggregate ETH received (direct donations + matching) across every epoch a project was funded.
+    </p>
+
+    <div class="ranking-list" id="rankingList">
+      <!-- populated by JS -->
+    </div>
+
+    <div class="insight">
+      <strong>Protocol Guild ranks first</strong> with 304.18 ETH across 9 epochs —
+      more than double the next-highest project.
+      The top 5 projects together received over 808 ETH, representing approximately 28% of all v1 project funding.
+    </div>
+
+    <div class="chart-card" style="margin-top:24px;">
+      <div class="chart-title">Top 10 projects by direct donations</div>
+      <div class="chart-sub">Effective direct donations after Epoch 1–3 threshold rules</div>
+      <div class="ranking-list" id="directDonationsList" style="margin-top:16px;"></div>
+    </div>
   </div>
 </section>
 
@@ -577,11 +637,9 @@
 <section class="section" id="participation">
   <div class="container">
     <p class="section-eyebrow">Participation</p>
-    <h2 class="section-title">Allocators &amp; retention</h2>
+    <h2 class="section-title">Participation &amp; retention</h2>
     <p class="section-sub">
-      1,357 unique allocators participated across the 11 epochs. 1,274 donated to at least one
-      eligible project; 83 claimed their rewards without donating to any project.
-      Average participation rate across all epochs: 41.82%.
+      How many users allocated in each epoch, how many returned, and how deep long-term participation became across v1.
     </p>
 
     <div class="chart-card">
@@ -626,7 +684,7 @@
         <div class="chart-title">Epoch-over-Epoch Retention Rate</div>
         <div class="chart-sub">Share of allocators from epoch N who returned in epoch N+1</div>
         <div style="overflow-x:auto; margin-top:4px;">
-          <table class="ret-table">
+          <table class="ret-table" aria-label="Epoch-over-epoch retention rates">
             <thead>
               <tr>
                 <th scope="col">From</th>
@@ -655,87 +713,74 @@
     </div>
 
     <div class="insight">
-      <strong>Loyalty signal:</strong> 20 users participated in all 11 epochs.
-      535 (39.4%) participated in only one epoch —
-      suggesting a large one-time or exploration cohort alongside a committed core.
-      Donor retention diverged sharply in E10→E11 (−7.5 pp), suggesting self-claim-only users were more likely to return for the transition epoch.
+      Octant v1 combined a broad exploratory cohort with a small committed core: 535 allocators appeared only once, while 20 participated in all 11 epochs.
     </div>
 
   </div>
 </section>
 
-<!-- ══════════ ALLOCATIONS ══════════ -->
-<section class="section" id="allocations">
+<!-- ══════════ NEW USERS ══════════ -->
+<section class="section" id="new-users">
   <div class="container">
-    <p class="section-eyebrow">Allocations</p>
-    <h2 class="section-title">How the Octant Community Allocated Rewards</h2>
+    <p class="section-eyebrow">User Growth</p>
+    <h2 class="section-title">When did new users enter Octant v1?</h2>
     <p class="section-sub">
-      ETH flow per epoch and allocator behaviour trends across v1 —
-      from funding splits to project breadth and donation concentration.
+      New eligible users by epoch, showing when Octant expanded and when growth slowed.
     </p>
 
-    <div class="chart-card">
-      <div class="chart-title">Allocated Distribution (Epochs 1–11)</div>
-      <div class="chart-sub">ETH donated to projects vs claimed by users vs unclaimed rewards per epoch</div>
-      <canvas id="splitChart" role="img" height="280" aria-label="Donated vs claimed per epoch stacked bar">ETH allocation per epoch — donated to projects / claimed by users / unclaimed: E1 249.71/70.39/9.51, E2 231.22/134.02/0.28, E3 359.41/213.98/1.81, E4 302.36/198.40/11.53, E5 322.61/187.67/14.93, E6 288.20/181.45/1.99, E7 298.67/203.88/3.46, E8 289.63/170.38/14.13, E9 242.18/164.47/5.22, E10 282.93/179.44/2.06, E11 0.63/76.45/10.18.</canvas>
+    <div class="grid-4" style="margin-bottom:24px;">
+      <div class="card" style="text-align:center;">
+        <div class="card-label">Total Unique Users with Budget</div>
+        <div class="card-value" style="font-size:42px;">2,641</div>
+        <div class="card-note">Unique addresses in Octant v1 budget files across Epochs 1–11</div>
+      </div>
+      <div class="card" style="text-align:center;">
+        <div class="card-label">Largest Growth Epoch</div>
+        <div class="card-value" style="font-size:42px; color:var(--mint);">Epoch 7</div>
+        <div class="card-note">The single biggest intake of first-time budgeted users</div>
+      </div>
+      <div class="card" style="text-align:center;">
+        <div class="card-label">New Users in Epoch 7</div>
+        <div class="card-value" style="font-size:42px; color:var(--orange);">1,266</div>
+        <div class="card-note">58.6% of all budgeted users in Epoch 7 were first-time entrants</div>
+      </div>
+      <div class="card" style="text-align:center;">
+        <div class="card-label">New Users After Epoch 7</div>
+        <div class="card-value" style="font-size:42px; color:var(--gray);">129</div>
+        <div class="card-note">Only 4.9% of all unique users entered after the main growth wave</div>
+      </div>
     </div>
 
-    <div class="grid-2" style="margin-top:24px;">
+    <div class="grid-2" style="margin-top:0;">
       <div class="chart-card">
-        <div class="chart-title">Avg Projects Selected per Donor</div>
-        <div class="chart-sub">Average number of projects each donating allocator funded per epoch. Epoch 11 shown separately — only Protocol Guild was available.</div>
-        <canvas id="avgProjectsChart" role="img" height="240" aria-label="Average projects per donor per epoch bar chart">Average projects funded per donor: E1 6.65, E2 5.51, E3 6.80, E4 5.74, E5 4.51, E6 4.35, E7 3.84, E8 5.09, E9 5.10, E10 4.63, E11 1.00.</canvas>
+        <div class="chart-title">New Users by Epoch</div>
+        <div class="chart-sub">First-time budgeted addresses entering Octant v1 in each epoch</div>
+        <canvas id="newUsersStackedChart" role="img" height="280" aria-label="Bar chart of new users per epoch. E1: 515, E2: 89, E3: 59, E4: 36, E5: 376, E6: 171, E7: 1266, E8: 31, E9: 53, E10: 30, E11: 15.">First-time budgeted users per epoch: E1 515, E2 89, E3 59, E4 36, E5 376, E6 171, E7 1266, E8 31, E9 53, E10 30, E11 15.</canvas>
       </div>
       <div class="chart-card">
-        <div class="chart-title">Top-1 Donor Concentration</div>
-        <div class="chart-sub">Share of all direct donations controlled by the single largest donor per epoch</div>
-        <canvas id="top1Chart" role="img" height="240" aria-label="Top-1 donor concentration per epoch bar chart">Top-1 donor concentration per epoch: E1 34.7%, E2 27.6%, E3 43.9%, E4 20.9%, E5 58.1%, E6 64.3%, E7 14.2%, E8 66.2%, E9 41.4%, E10 58.8%, E11 32.9%.</canvas>
+        <div class="chart-title">Cumulative Unique Users with Budget</div>
+        <div class="chart-sub">Total distinct addresses that have ever had a budget, after each epoch</div>
+        <canvas id="cumulativeUsersChart" role="img" height="280" aria-label="Line chart of cumulative unique budget holders. E1: 515, E2: 604, E3: 663, E4: 699, E5: 1075, E6: 1246, E7: 2512, E8: 2543, E9: 2596, E10: 2626, E11: 2641.">Cumulative unique budget holders after each epoch: E1 515, E2 604, E3 663, E4 699, E5 1075, E6 1246, E7 2512, E8 2543, E9 2596, E10 2626, E11 2641.</canvas>
       </div>
-    </div>
-
-    <div class="insight">
-      <strong>Narrowing breadth, concentrated power.</strong>
-      Across Epochs 1–10, the average donor funded 3.84–6.80 projects per epoch.
-      Top-1 concentration swung widely — from 14.2% in E7 (659 allocators, broadest participation)
-      to 66.2% in E8 — reflecting how a single large donor could dominate in lower-turnout epochs.
-      Epoch 11 was a structural transition epoch: with only Protocol Guild available,
-      project selection was not possible by design.
     </div>
 
     <div style="margin-top:24px;">
       <div class="chart-card">
-        <div class="chart-title">Claimed Rewards vs Direct Donations</div>
-        <div class="chart-sub">Per epoch — and totals across all v1</div>
-        <div class="grid-4" style="gap:10px; margin-bottom:20px;">
-          <div style="text-align:center; padding:14px 8px; background:var(--surface2); border-radius:8px;">
-            <div style="font-family:var(--font-serif); font-size:26px; color:var(--dark); line-height:1.1;">107.5</div>
-            <div style="font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.07em; color:var(--gray); margin-top:4px;">Direct ETH</div>
-          </div>
-          <div style="text-align:center; padding:14px 8px; background:var(--surface2); border-radius:8px;">
-            <div style="font-family:var(--font-serif); font-size:26px; color:var(--dark); line-height:1.1;">1,780.5</div>
-            <div style="font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.07em; color:var(--gray); margin-top:4px;">Claimed ETH</div>
-          </div>
-          <div style="text-align:center; padding:14px 8px; background:var(--sea-mist); border-radius:8px;">
-            <div style="font-family:var(--font-serif); font-size:26px; color:var(--mint); line-height:1.1;">16.57x</div>
-            <div style="font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.07em; color:var(--mint); margin-top:4px;">Ratio</div>
-          </div>
-          <div style="text-align:center; padding:14px 8px; background:var(--seashell); border-radius:8px;">
-            <div style="font-family:var(--font-serif); font-size:26px; color:var(--orange); line-height:1.1;">5.7%</div>
-            <div style="font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.07em; color:var(--orange); margin-top:4px;">Direct Share</div>
-          </div>
-        </div>
-        <div style="overflow-x:auto;">
-          <table class="ret-table" id="claimedDirectTable">
+        <div class="chart-title">New Users Breakdown per Epoch</div>
+        <div class="chart-sub">Epoch-by-epoch figures for total budget holders, new addresses, and returning addresses</div>
+        <div style="overflow-x:auto; margin-top:4px;">
+          <table class="ret-table" id="newUsersTable" aria-label="New users breakdown per epoch">
             <thead>
               <tr>
                 <th scope="col">Epoch</th>
-                <th scope="col">Direct (ETH)</th>
-                <th scope="col">Claimed (ETH)</th>
-                <th scope="col">Ratio</th>
-                <th scope="col">Direct Share</th>
+                <th scope="col">Total with Budget</th>
+                <th scope="col">New (first-time)</th>
+                <th scope="col">Returning</th>
+                <th scope="col">% New</th>
+                <th scope="col">Cumulative Unique</th>
               </tr>
             </thead>
-            <tbody id="claimedDirectBody">
+            <tbody id="newUsersBody">
               <!-- populated by JS -->
             </tbody>
           </table>
@@ -743,59 +788,15 @@
       </div>
     </div>
 
-    <div style="margin-top:24px;">
-      <div class="chart-card">
-        <div class="chart-title">Matching Leverage per Epoch</div>
-        <div class="chart-sub">Project funding generated per 1 ETH of direct donations (E11 had no Golem Foundation matching)</div>
-        <canvas id="leverageChart" role="img" height="280" aria-label="Matching leverage per epoch bar chart">Matching leverage (project funding per 1 ETH direct donations): E1 45.44x, E2 59.35x, E3 15.42x, E4 63.16x, E5 18.30x, E6 20.14x, E7 66.00x, E8 20.62x, E9 62.60x, E10 19.07x, E11 1.01x (no Golem Foundation matching).</canvas>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ══════════ EPOCH EXPLORER ══════════ -->
-<section class="section" id="epochs">
-  <div class="container">
-    <p class="section-eyebrow">Epoch Explorer</p>
-    <h2 class="section-title">Dive into each epoch</h2>
-    <p class="section-sub">
-      Select an epoch to see its key stats and top funded projects (funding includes matching).
-    </p>
-
-    <div class="epoch-tabs" role="tablist" aria-label="Epoch selector">
-      <!-- populated by JS -->
-    </div>
-
-    <div id="epochPanels">
-      <!-- populated by JS -->
-    </div>
-  </div>
-</section>
-
-<!-- ══════════ ALL-TIME RANKINGS ══════════ -->
-<section class="section" id="rankings">
-  <div class="container">
-    <p class="section-eyebrow">All-Time Rankings</p>
-    <h2 class="section-title">Top projects across all v1 epochs</h2>
-    <p class="section-sub">
-      Aggregate ETH received (direct donations + matching) across every epoch a project was funded.
-    </p>
-
-    <div class="ranking-list" id="rankingList">
-      <!-- populated by JS -->
-    </div>
-
     <div class="insight">
-      <strong>Protocol Guild dominates</strong> with 304.18 ETH across 9 epochs —
-      more than double the next-highest project.
-      The top 5 projects together received over 808 ETH, representing approximately 28% of all v1 project funding.
+      Growth came in waves. Expansion accelerated in Epoch 5 and peaked in Epoch 7, then slowed sharply in the final stretch of v1. That surge was driven in large part by more deliberate community onboarding, especially the rollout of Sablier-based distribution and partnerships such as SheFi and Celo.
     </div>
 
-    <div class="chart-card" style="margin-top:24px;">
-      <div class="chart-title">Top 10 projects by direct donations</div>
-      <div class="chart-sub">Effective direct donations after Epoch 1–3 threshold rules</div>
-      <div class="ranking-list" id="directDonationsList" style="margin-top:16px;"></div>
-    </div>
+    <p style="font-size:12px; color:var(--gray); margin-top:16px; line-height:1.6;">
+      <strong>Methodology:</strong> New users are defined here as addresses appearing in Octant v1 budget data for the first time in a given epoch.
+      This measures entry into the budgeted user base, not necessarily first observable allocation activity.
+    </p>
+
   </div>
 </section>
 
@@ -805,7 +806,7 @@
     <p class="section-eyebrow">Early Onboarding Cohort</p>
     <h2 class="section-title">What happened to Epoch 0 participants?</h2>
     <p class="section-sub">
-      Before Octant v1 launched, 656 addresses took part in a <a href="https://golem.foundation/2023/07/28/epoch-zero-results.html" target="_blank" rel="noopener noreferrer" style="color:inherit; text-decoration:underline; text-underline-offset:2px;">promotional event called Epoch 0</a>. This section tracks how many later became active participants in Octant v1 allocation windows, how long they stayed active, and how many followed Octant to v2.
+      Of the 656 addresses that joined <a href="https://golem.foundation/2023/07/28/epoch-zero-results.html" target="_blank" rel="noopener noreferrer" style="color:inherit; text-decoration:underline; text-underline-offset:2px;">Epoch 0 before launch</a>, how many later became active in v1 — and how many ultimately moved to v2.
     </p>
     <p style="font-size:13px; color:var(--gray); margin-bottom:44px;"><small>Patron Mode participation is tracked separately, as it is passive in nature.</small></p>
 
@@ -851,9 +852,7 @@
 
     <!-- Insight box -->
     <div class="insight">
-      <strong>A broad top-of-funnel with a committed migrating core.</strong>
-      Epoch 0 created a meaningful but relatively shallow top-of-funnel for Octant v1. Of 656 pre-launch participants, 245 later took part in allocation windows, but only 34 remained active through Epoch 11. Late-stage retention was highly predictive of migration: 32 of those 34 users moved to Octant v2 before the cutoff.
-      Active allocation does not capture every form of v1 participation, however. Three Epoch 0 participants used Patron Mode and later migrated to Octant v2.
+      Epoch 0 created a broad awareness cohort, but long-term retention was limited. The users who stayed active until the end were also the most likely to migrate to v2.
     </div>
 
     <!-- Methodology note -->
@@ -905,7 +904,7 @@
         <div class="chart-title">Onboarding program comparison</div>
         <div class="chart-sub">User outcomes and cancelled GLM by program</div>
         <div style="overflow-x:auto;">
-        <table class="ret-table" style="margin-top:4px;">
+        <table class="ret-table" style="margin-top:4px;" aria-label="Sablier onboarding program comparison">
           <thead>
             <tr>
               <th scope="col">Program</th>
@@ -996,8 +995,8 @@
         <div class="chart-title">What happened to the streamed GLM?</div>
         <div class="chart-sub">Final token outcomes across all onboarding streams</div>
         <div class="sablier-fate-inner">
-          <div style="width:180px; flex-shrink:0;">
-            <canvas id="sablierFateChart" role="img" width="180" height="180"
+          <div style="max-width:180px; width:100%; flex-shrink:0;">
+            <canvas id="sablierFateChart" role="img"
               aria-label="GLM fate donut chart. Cancelled: 424,400 GLM (36.3%). Withdrawn and attributed to v2 locks: 324,526 GLM (27.8%). Withdrawn not migrated: 377,365 GLM (32.3%). Still in Sablier: 42,910 GLM (3.7%).">GLM fate breakdown: Cancelled 424,400 (36.3%), Withdrawn not migrated to v2 377,365 (32.3%), Withdrawn and attributed to v2 locks 324,526 (27.8%), Still in Sablier 42,910 (3.7%).</canvas>
           </div>
           <div style="display:flex; flex-direction:column; gap:11px; flex:1;">
@@ -1037,12 +1036,7 @@
 
     <!-- Insight -->
     <div class="insight">
-      <strong>The three onboarding models produced very different outcomes.</strong>
-      The small Raffle cohort showed much stronger downstream engagement than the two larger
-      partner cohorts: 90.9% of recipients were active in Octant v1 during Epochs 7–11, 77.3%
-      migrated to v2, and the group accounted for 98% of all GLM attributed to v2 migration.
-      This suggests that cohort quality, incentive design, and recipient intent mattered more
-      than scale alone.
+      The three onboarding programs produced very different outcomes. The Raffle cohort converted far better than the two larger partner cohorts, suggesting that targeting and recipient motivation mattered as much as scale.
     </div>
 
   </div>
@@ -1054,8 +1048,7 @@
     <p class="section-eyebrow">Migration to Octant v2</p>
     <h2 class="section-title">Passing the torch</h2>
     <p class="section-sub">
-      The official migration window to <a href="https://glm.octant.app" target="_blank" rel="noopener noreferrer" style="color:inherit; text-decoration:underline; text-underline-offset:2px;">Octant v2</a> ran 18 Feb – 4 Mar 2026.
-      Active Epoch 11 allocators showed strong intent: nearly all who engaged migrated.
+      The final v1-to-v2 funnel: who stayed active through Epoch 11, and how many ultimately locked in <a href="https://glm.octant.app" target="_blank" rel="noopener noreferrer" style="color:inherit; text-decoration:underline; text-underline-offset:2px;">Octant v2</a>.
     </p>
 
     <div class="migration-grid">
@@ -1185,7 +1178,7 @@ const REPORT = {
 
   epochs: [
     {
-      n: 1, theme: "Digital public goods", themeClass: "",
+      n: 1, theme: "OSS and Ethereum Public Goods", themeClass: "",
       allocators: 362, eligible: 515,
       avgProjects: 6.65, top1pct: 34.73,
       donated: 249.71, fundedProjects: 19, rawDonations: "5.4959",
@@ -1203,7 +1196,7 @@ const REPORT = {
       ]
     },
     {
-      n: 2, theme: "Digital public goods", themeClass: "",
+      n: 2, theme: "OSS and Ethereum Public Goods", themeClass: "",
       allocators: 366, eligible: 586,
       avgProjects: 5.51, top1pct: 27.64,
       donated: 231.22, fundedProjects: 19, rawDonations: "3.8958",
@@ -1238,7 +1231,7 @@ const REPORT = {
       ]
     },
     {
-      n: 4, theme: "Digital public goods", themeClass: "",
+      n: 4, theme: "OSS and Ethereum Public Goods", themeClass: "",
       allocators: 303, eligible: 593,
       avgProjects: 5.74, top1pct: 20.89,
       donated: 302.36, fundedProjects: 30, rawDonations: "4.7875",
@@ -1256,7 +1249,7 @@ const REPORT = {
       ]
     },
     {
-      n: 5, theme: "Digital public goods", themeClass: "",
+      n: 5, theme: "OSS and Ethereum Public Goods", themeClass: "",
       allocators: 439, eligible: 898,
       avgProjects: 4.51, top1pct: 58.11,
       donated: 322.61, fundedProjects: 30, rawDonations: "17.6302",
@@ -1274,7 +1267,7 @@ const REPORT = {
       ]
     },
     {
-      n: 6, theme: "Digital public goods", themeClass: "",
+      n: 6, theme: "OSS and Ethereum Public Goods", themeClass: "",
       allocators: 479, eligible: 982,
       avgProjects: 4.35, top1pct: 64.29,
       donated: 288.20, fundedProjects: 30, rawDonations: "14.313",
@@ -1346,7 +1339,7 @@ const REPORT = {
       ]
     },
     {
-      n: 10, theme: "Digital public goods", themeClass: "",
+      n: 10, theme: "OSS and Ethereum Public Goods", themeClass: "",
       allocators: 279, eligible: 1015,
       avgProjects: 4.63, top1pct: 58.83,
       donated: 282.93, fundedProjects: 24, rawDonations: "14.8356",
@@ -1401,6 +1394,8 @@ const REPORT = {
   ]
 };
 
+document.addEventListener('DOMContentLoaded', function () {
+
 /* ════════════════════════════════════════════════════
    CHART DEFAULTS
    ════════════════════════════════════════════════════ */
@@ -1427,6 +1422,7 @@ Chart.defaults.color = "#9ea39e";
       }]
     },
     options: {
+      responsive: true,
       cutout: "68%",
       plugins: {
         legend: { display: false },
@@ -2028,6 +2024,7 @@ Chart.defaults.color = "#9ea39e";
     panel.className  = "epoch-panel" + (i === 0 ? " active" : "");
     panel.id         = `panel-${ep.n}`;
     panel.setAttribute("role", "tabpanel");
+    panel.setAttribute("tabindex", "0");
     panel.setAttribute("aria-labelledby", `btn-${ep.n}`);
 
     const themeClass = ep.themeClass ? ` ${ep.themeClass}` : "";
@@ -2339,7 +2336,7 @@ Chart.defaults.color = "#9ea39e";
     },
     options: {
       cutout: "66%",
-      responsive: false,
+      responsive: true,
       plugins: {
         legend: { display: false },
         tooltip: {
@@ -2386,6 +2383,8 @@ Chart.defaults.color = "#9ea39e";
     }
   });
 }());
+
+}); // DOMContentLoaded
 </script>
 
 </body>
